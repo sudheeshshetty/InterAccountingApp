@@ -6,3 +6,7 @@ object{
 .select:hover{
 cursor:pointer;
 }
+.home-post{
+	height: 165px;
+	margin-top: 20px;
+}

@@ -43,7 +43,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <header class="main-header">
 
         <!-- Logo -->
-        <a href="index2.html" class="logo">
+        <a href="starter.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>BANK</b></span>
           <!-- logo for regular state and mobile devices -->
@@ -88,10 +88,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="sidebar-menu">
             <li class="header">BANKING</li>
             <!-- Optionally, you can add icons to the links -->
-            <li><a class="select"><i class="fa fa-link"></i> <span>Create Account</span></a></li>
-            <li><a href="#"><i class="fa fa-link"></i> <span>List Accounts</span></a></li>
+            <li><a class="select" onclick="register()"><i class="fa"></i> <span>Create Account</span></a></li>
+            <li><a href="#"><i class="fa "></i> <span>List Accounts</span></a></li>
             <li class="treeview">
-              <a href="#"><i class="fa fa-link"></i> <span>Transfer</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><i class="fa"></i> <span>Transfer</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="#">Credit</a></li>
                 <li><a href="#">Debit</a></li>
@@ -103,11 +103,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </aside>
 
       <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper" name="section" id="section" >
-	<form id="register" class="form" method="post" action="http://localhost:3000/account">
-	<h1 class="form reg" align="center">Register</h1>
-	<fieldset class="form field">
-		<dl>
+      <div class="content-wrapper" name="initial" id="initial" style="display: block;">
+      
+      </div>
+      
+      <div class="content-wrapper" name="register" id="register" style="display: none;" >
+		<form id="register" class="form" method="post" action="http://localhost:3000/account">
+		<h1 class="form reg" align="center">Register</h1>
+		<fieldset class="form field">
+			<dl>
 			<dt><label>Name</label>
 			<dd><input id="fname" name="fname" type="text" placeholder="Firstname" onblur="validate()" required="required">
 			<input type="text" id="lname" name="lname" placeholder="Surname" required="required" > </dd>
@@ -120,15 +124,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			<dd><input id="email" name="email" type="email" placeholder="example@domain.com" required="required"></dd>
 			<dt><label>Mobile</label></dt>
 			<dd><input id="mobile" name="mobile" type="tel" placeholder="countrycode+number" required="required"></dd>
+			<dt><label>Account Type</label></dt>
+			<dd><select name="accountType" id="accountType" onblur="validate()">
+					<option value="select">--select--</option>
+  					<option value="savings">Savings</option>
+  					<option value="recurring">Recurring</option>
+				</select>
+				<span id="error"></span>
+			</dd>
 			<dt><label>Balance</label></dt>
 			<dd><input type="number" id="balance" name="balance"></dd>
 			<dt><label>Address</label></dt>
 			<dd>Address Line1  <input type="text" class="address" name="add1" id="add1"></dd>
 			<dd>Address Line2  <input type="text" class="address" name="add2" id="add2"></dd>		
-		</dl>
-		<input type="button" class="form submit" id="submit" name="submit" onclick="senddata()" value="Submit">
-	</fieldset>
-</form>
+			</dl>
+			<input type="button" class="form submit" id="submit" name="submit" onclick="senddata()" value="Submit">
+		</fieldset>
+		</form>
       </div><!-- /.content-wrapper -->
 
       <!-- Main Footer -->

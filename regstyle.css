@@ -13,6 +13,9 @@ body{
 	border-radius:10px;
 	background-color: #c2ddf6;
 }
+dl{
+	margin-left:1%;
+}
 dd{
 	margin-left: 0;
 	padding:1%;
@@ -38,7 +41,7 @@ input{
 	background-color: #0505d0;
 	cursor: pointer; 
 }
-.submit:HOVER,{
+.submit:HOVER{
 	color: white;
 }
 @media only screen and (max-width: 900px) {
