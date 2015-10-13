@@ -31,6 +31,9 @@ input{
 .submit{
 	display:block;
 	float: right;
+	font:bolder;
+	font-size:large;
+	color:black;
 	clear:both;
 	margin-right:40%;
 	width: 100px;

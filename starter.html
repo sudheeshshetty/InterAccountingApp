@@ -113,7 +113,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		<fieldset class="form field">
 			<dl>
 			<dt><label>Name</label>
-			<dd><input id="fname" name="fname" type="text" placeholder="Firstname" onblur="validate()" required="required">
+			<dd><input id="fname" name="fname" type="text" placeholder="Firstname" required="required">
 			<input type="text" id="lname" name="lname" placeholder="Surname" required="required" > </dd>
 			<dt><label>Gender</label></dt>
 			<dd><input type="radio" value="male" name="sex" id="sex">Male
@@ -135,8 +135,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			<dt><label>Balance</label></dt>
 			<dd><input type="number" id="balance" name="balance"></dd>
 			<dt><label>Address</label></dt>
-			<dd>Address Line1  <input type="text" class="address" name="add1" id="add1"></dd>
-			<dd>Address Line2  <input type="text" class="address" name="add2" id="add2"></dd>		
+			<dd><input type="text" class="address" placeholder="Address Line 1" name="add1" id="add1"></dd>
+			<dd><input type="text" class="address" placeholder="Address Line 2" sname="add2" id="add2"></dd>		
 			</dl>
 			<input type="button" class="form submit" id="submit" name="submit" onclick="senddata()" value="Submit">
 		</fieldset>
