@@ -44,7 +44,39 @@ input{
 	background-color: #0505d0;
 	cursor: pointer; 
 }
-.submit:HOVER{
+.credit{
+	display:block;
+	float: right;
+	font:bolder;
+	font-size:large;
+	color:black;
+	clear:both;
+	margin-right:40%;
+	width: 100px;
+	height: 30px;
+	border-radius:5px;
+	border:thin #000000;
+	border-style:none;
+	background-color: #0505d0;
+	cursor: pointer; 
+}
+.debit{
+	display:block;
+	float: left;
+	font:bolder;
+	font-size:large;
+	color:black;
+	clear:both;
+	margin-left:40%;
+	width: 100px;
+	height: 30px;
+	border-radius:5px;
+	border:thin #000000;
+	border-style:none;
+	background-color: #0505d0;
+	cursor: pointer; 
+}
+.submit:HOVER,.credit:HOVER,.debit:HOVER{
 	color: white;
 }
 @media only screen and (max-width: 900px) {
