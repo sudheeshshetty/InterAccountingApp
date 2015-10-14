@@ -4,6 +4,7 @@ object{
 	height:auto;
 }
 .select:hover{
+color:blue;
 cursor:pointer;
 }
 .home-post{
@@ -16,4 +17,24 @@ table{
 	padding:10%;
 	border-width: 1%;
 	border-color: black;
+}
+.filter{
+float:right;
+margin-right:5%;
+}
+.online{
+clear:both;
+display:inline;
+font:bolder;
+	font-size:large;
+	color:black;
+	clear:both;
+	border-radius:5px;
+	border:thin #000000;
+	border-style:none;
+	background-color: #0505d0;
+}
+.online:hover{
+color:white;
+cursor:pointer;
 }
