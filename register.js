@@ -54,7 +54,7 @@ function validate(){
 	}
 }
 
-/*function list(){
+function list(){
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 	    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -63,19 +63,14 @@ function validate(){
 		  document.getElementById("register").style.display="none";
 		  var doc="</br><span class='filter'><label>Filter</label><select  name='filter' id='filter'>"+
 					"<option value='select' selected='selected'>--select--</option>"+
-  					"<option value='savings'>Savings</option>"+
-  					"<option value='recurring'>Recurring</option>"+
+  					"<option value='nameasc'>Name Ascending</option>"+
+  					"<option value='namedesc'>Name Descending</option>"+
+  					"<option value='date'>Creation Date</option>"+
 				"</select></span></br></br><table border='1'><tr><td>Sr.No</td><td>Account Number</td><td>Name</td><td>Created On</td></tr>";
 		  for(var i=0;i<obj.length;i++)
 		  {
-		      //alert(obj[i].fname);
-			  localStorage.setItem(i,obj[i].fname);
-			  //doc += '<tr><td>'+i+'</td><td><a class="select" onclick="populate('+obj[i].fname+','+obj[i].lname+','+obj[i]._id+','+obj[i].email+','+obj[i].mobile+','+obj[i].balance+');">'+obj[i]._id+'</a></td>';
-			  //doc += '<td><a class="select" onclick="populate('+obj[i].fname+','+obj[i].lname+','+obj[i]._id+','+obj[i].email+','+obj[i].mobile+','+obj[i].balance+');">'+obj[i].fname+" "+obj[i].lname+'</a></td><td>'+obj[i].creationDate+'</td></tr>';
-			  doc+="<tr><td>"+(i+1)+"</td><td class='select' onclick='populate("+i+");'>"+obj[i]._id+"</td><td>"+obj[i].fname+" "+obj[i].lname+"</td><td>"+obj[i].creationDate+"</td></tr>";
-			   //doc += '<tr><td id="select">'+(i+1)+'</td>';
-			  //doc += '<td>'+obj[i]._id+'</td>';
-			  //doc += '<td>'+obj[i].fname+" "+obj[i].lname+'</a></td></tr>';
+			  doc += '<tr class="select" onclick="populate(\''+obj[i]._id+'\',\''+obj[i].fname+'\',\''+obj[i].lname+'\',\''+obj[i].email+'\',\''+obj[i].mobile+'\',\''+obj[i].balance+'\');"><td>'+(i+1)+'</td><td>'+obj[i]._id+'</td>';
+			  doc += '<td>'+obj[i].fname+" "+obj[i].lname+'</td><td>'+obj[i].creationDate+'</td></tr>';
 		  }
 		  doc+="</table>";
 	      document.getElementById("initial").innerHTML=doc;
@@ -83,9 +78,29 @@ function validate(){
 	};
 	xmlHttp.open( "GET", "http://localhost:3000/list", false );
 	xmlHttp.send();
-}*/
- var obj;
-function list(){
+}
+
+function statements(){
+	var account=document.getElementById("account").innerHTML;
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = function() {
+	    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+		  var obj=JSON.parse(xmlHttp.responseText);
+		  document.getElementById("initial").style.display="block";
+		  document.getElementById("register").style.display="none";
+		  var doc="</br></br></br><table border='1'><tr><td>Sr.No</td><td>Account Number</td><td>Name</td><td>Status</td></tr>";
+		  for(var i=0;i<obj.length;i++)
+		  {
+			doc+="<tr><td>"+(i+1)+"</td><td>"+obj[i].AccountNumber+"</td><td>"+obj[i].name+"</td><td>"+obj[i].Status+"</td></tr>";
+		  }
+		}
+	}
+	xmlHttp.open( "POST", "http://localhost:3000/statement", false );
+	xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	var params="account="+account;
+	xmlHttp.send(params);
+}
+/*function list(){
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 	    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -123,6 +138,7 @@ function list(){
 	xmlHttp.open( "GET", "http://localhost:3000/list", false );
 	xmlHttp.send();
 }
+
 function showRow(row)
 {
 var x=row.cells;
@@ -131,7 +147,7 @@ var idValue= x[0].innerHTML;
 			  alert("From"+idValue);
 	    	  var index=idValue-1;
  populate(obj[index]._id,obj[index].fname,obj[index].lname,obj[index].email,obj[index].mobile,obj[index].balance);
-}
+}*/
 function populate(account,fname,lname,email,mobile,balance){
 	var doc='<form id="formcreddeb" class="form" method="post">'+
 	'<h1 class="form reg" align="center">Details</h1>'+
@@ -150,8 +166,9 @@ function populate(account,fname,lname,email,mobile,balance){
 		'<div id="bal" name="bal" style="display:none;"><dt><label>Enter Balance</label></dt>'+
 		'<dd><input type="number" id="transbal" name="transbal"/></dd></div>'+
 		'</dl>'+
-		'<div id="transfer"><input class= "online" type="button" id="credit" name="credit" value="Credit" onclick="balance(\'debit\')"/>'+
-		'<input type="button" class="online" id="debit" name="debit" value="Debit" onclick="balance(\'credit\')"/></div>'+
+		'<div id="transfer"><input class= "online" type="button" id="credit" name="credit" value="Credit" onclick="balance(\'debit\')">'+
+		'<input type="button" class="online" id="debit" name="debit" value="Debit" onclick="balance(\'credit\')">'+
+		'<input type="button" class="online" id="statements" name="statements" value="Show Statements" onclick="statements();"></div>'+
 		
 	  '</fieldset>'+
 	'</form>';
@@ -171,7 +188,7 @@ function balance(val){
 	{
 		document.getElementById("bal").innerHTML='<dt><label>'+c+' Balance</label></dt><dd><span id="transbal" name="transbal">'+document.getElementById("transbal").value+'</span></dd>';
 		document.getElementById("transfer").innerHTML='<input class= "online" type="button" id="confirm" name="confirm" value="Confirm" onclick="transact(\''+val+'\')"/>'+
-		'<input type="button" class="online" id="cancel" name="cancel" value="Cancel" href="/starter.html">';
+		'<input type="button" class="online" id="cancel" name="cancel" value="Cancel" onclick="list()">';
 	}
 	//document.getElementById("debit").style.display="none";
 	//document.getElementByID("transfer").innerHTML='<input type="button" class="online" id="trans" name="trans" value="'+val+'" onclick="transact('+val+')"/>'
@@ -202,12 +219,10 @@ function transact(val){
 	};
 	
 	if(val=="debit"){
-	alert("in credit");
 		xmlHttp.open( "POST", "http://localhost:3000/credit", false );
 	}
 	else
 	{
-	alert("in debit");
 		xmlHttp.open( "POST", "http://localhost:3000/debit", false );
 	}
 	var params="account="+account+"&balance="+balance;
@@ -215,18 +230,3 @@ function transact(val){
 	xmlHttp.send(params);
 }
 
-//function statements(){
-//var xmlHttp = new XMLHttpRequest();
-//	xmlHttp.onreadystatechange = function() {
-//	    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-//		  var obj=JSON.parse(xmlHttp.responseText);
-//		  document.getElementById("initial").style.display="block";
-//		  document.getElementById("register").style.display="none";
-//		  var doc="</br></br></br><table border='1'><tr><td>Sr.No</td><td>Account Number</td><td>Name</td><td>Status</td></tr>";
-//		  for(var i=0;i<obj.length;i++)
-//		  {
-//			doc+="<tr><td>"+(i+1)+"</td><td>"+obj[i].AccountNumber+"</td><td>"+obj[i].name+"</td><td>"+obj[i].Status+"</td></tr>";
-//		  }
-//		}
-//	}
-//}
