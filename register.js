@@ -80,55 +80,6 @@ function list(){
 	xmlHttp.send();
 }
 
-
-/*function list(){
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-	    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-	    	var doc="";
-		 obj=JSON.parse(xmlHttp.responseText);
-		  document.getElementById("initial").style.display="block";
-		  document.getElementById("register").style.display="none";
-		  doc += '</br></br></br><table border="1"><tr><td>Sr.No</td><td>Account Number</td><td>Name</td></tr>';
-		  for(var i=0;i<obj.length;i++)
-		  {
-			  doc += '<tr onclick="javascript:showRow(this);"><td id="select">'+(i+1)+'</td>';
-			  doc += '<td>'+obj[i]._id+'</td>';
-			  doc += '<td>'+obj[i].fname+" "+obj[i].lname+'</a></td></tr>';
-		  }
-		  
-		  doc += '</table>';
-	      document.getElementById("initial").innerHTML=doc;
-		 // document.getElementsByTagName("tr").onclick=function(){
-		//		alert(this.innerHTML);
-	    //	  var idValue= this.innerHTML;
-		//	  alert(idValue);
-	    //	  var index=idValue-1;
-	    //	  populate(obj[index]._id,obj[index].fname,obj[index].lname,obj[index].email,obj[index].mobile,obj[index].balance);
-	   //   }
-	     // document.getElementById("select").onclick=function(){
-	    //	  var idValue= this.innerHTML;
-		//	  alert(idValue);
-	    //	  var index=idValue-1;
-	    //	  populate(obj[index]._id,obj[index].fname,obj[index].lname,obj[index].email,obj[index].mobile,obj[index].balance);
-	    //  }
-	   //   var idValue=document.getElementById("select").innerHTML;
-	      
-	    }
-	}
-	xmlHttp.open( "GET", "http://localhost:3000/list", false );
-	xmlHttp.send();
-}
-
-function showRow(row)
-{
-var x=row.cells;
-alert(x[0].innerHTML);
-var idValue= x[0].innerHTML;
-			  alert("From"+idValue);
-	    	  var index=idValue-1;
- populate(obj[index]._id,obj[index].fname,obj[index].lname,obj[index].email,obj[index].mobile,obj[index].balance);
-}*/
 function populate(account,fname,lname,email,mobile,balance){
 	var doc='<form id="formcreddeb" class="form" method="post">'+
 	'<h1 class="form reg" align="center">Details</h1>'+
@@ -153,7 +104,7 @@ function populate(account,fname,lname,email,mobile,balance){
 		
 	  '</fieldset>'+
 	'</form>';
-	document.getElementById("initial").innerHTML=doc
+	document.getElementById("initial").innerHTML=doc;
 }
 
 function statements(){
@@ -164,10 +115,10 @@ function statements(){
 		  var obj=JSON.parse(xmlHttp.responseText);
 		  document.getElementById("initial").style.display="block";
 		  document.getElementById("register").style.display="none";
-		  var doc="</br></br></br><table border='1'><tr><td>Sr.No</td><td>Account Number</td><td>Status</td><td>Transaction Date</td></tr>";
+		  var doc="</br></br></br><table border='1'><tr><td>Sr.No</td><td>Account Number</td><td>Transaction Number</td><td>Status</td><td>Transaction Date</td></tr>";
 		  for(var i=0;i<obj.length;i++)
 		  {
-			doc+="<tr><td>"+(i+1)+"</td><td>"+obj[i].AccountNumber+"</td><td>"+obj[i].Status+"</td><td>"+obj[i].transactionDate+"</td></tr>";
+			doc+="<tr class=\"select\" onclick=\"delet(\'"+obj[i]._id+"\',\'"+obj[i].AccountNumber+"\',\'"+obj[i].Status+"\',\'"+obj[i].transactionDate+"\')\"><td>"+(i+1)+"</td><td>"+obj[i].AccountNumber+"</td><td>"+obj[i]._id+"</td><td>"+obj[i].Status+"</td><td>"+obj[i].transactionDate+"</td></tr>";
 		  }
 		  doc+="</table>";
 	      document.getElementById("initial").innerHTML=doc;
@@ -177,6 +128,50 @@ function statements(){
 	xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	//var params="account="+account;
 	xmlHttp.send();
+}
+
+function delet(transaction_id,account,status,transactions){
+	var doc='<form id="formdel" class="form" method="post">'+
+	'<h1 class="form reg" align="center">Details</h1>'+
+	'<fieldset class="form field">'+
+		'<dl>'+
+		'<dt><label>Account Number</label>'+
+		'<dd><span id="account" name="account">'+account+'</span></dd>'+
+		'<dt><label>Transaction Number</label>'+
+		'<dd><span id="trans" name="trans">'+transaction_id+'</span></dd>'+
+		'<dt><label>Status</label>'+
+		'<dd><span id="name" name="nam">'+status+'</span></dd>'+
+		'<dt><label>Transaction Date</label></dt>'+
+		'<dd><span id="email" name="email">'+transactions+'</span></dd>'+
+		'</dl>'+
+		'<div id="transfer"><input class= "online" type="button" id="delete" name="delete" value="Delete" onclick="deleteconfirm()"></div>'+
+	  '</fieldset>'+
+	'</form>';
+	document.getElementById("initial").innerHTML=doc;
+}
+
+function deleteconfirm(){
+	var delet=confirm("Are you sure you want to dlete this log?");
+	if(delet==true)
+	{
+		var trans_id=document.getElementById("trans").innerHTML;
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.onreadystatechange = function() {
+		    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			  document.getElementById("initial").style.display="block";
+			  document.getElementById("register").style.display="none";
+			  if(xmlHttp.responseText=="deleted")
+				  document.getElementById("initial").innerHTML="Transaction Id with "+trans_id+" deleted";
+			  else
+				  document.getElementById("initial").innerHTML="Not deleted";
+		      
+		    }
+		};
+		xmlHttp.open( "GET", "http://localhost:3000/delete?transactionID="+trans_id, false );
+		xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xmlHttp.send();
+		
+	}
 }
 
 function balance(val){
@@ -194,10 +189,6 @@ function balance(val){
 		document.getElementById("transfer").innerHTML='<input class= "online" type="button" id="confirm" name="confirm" value="Confirm" onclick="transact(\''+val+'\')"/>'+
 		'<input type="button" class="online" id="cancel" name="cancel" value="Cancel" onclick="list()">';
 	}
-	//document.getElementById("debit").style.display="none";
-	//document.getElementByID("transfer").innerHTML='<input type="button" class="online" id="trans" name="trans" value="'+val+'" onclick="transact('+val+')"/>'
-	//var val=this.value;
-	//document.getElementById("button").innerHTML='<input class= "online" type="number" id="creditbal" name="creditbal"><input class= "online" type="button" id="credit" name="credit" value="'+val+'" onclick=""/>;
 }
 
 function transact(val){
