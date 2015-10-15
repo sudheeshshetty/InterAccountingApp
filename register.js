@@ -80,26 +80,7 @@ function list(){
 	xmlHttp.send();
 }
 
-function statements(){
-	var account=document.getElementById("account").innerHTML;
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-	    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-		  var obj=JSON.parse(xmlHttp.responseText);
-		  document.getElementById("initial").style.display="block";
-		  document.getElementById("register").style.display="none";
-		  var doc="</br></br></br><table border='1'><tr><td>Sr.No</td><td>Account Number</td><td>Name</td><td>Status</td></tr>";
-		  for(var i=0;i<obj.length;i++)
-		  {
-			doc+="<tr><td>"+(i+1)+"</td><td>"+obj[i].AccountNumber+"</td><td>"+obj[i].name+"</td><td>"+obj[i].Status+"</td></tr>";
-		  }
-		}
-	}
-	xmlHttp.open( "POST", "http://localhost:3000/statement", false );
-	xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	var params="account="+account;
-	xmlHttp.send(params);
-}
+
 /*function list(){
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
@@ -168,11 +149,34 @@ function populate(account,fname,lname,email,mobile,balance){
 		'</dl>'+
 		'<div id="transfer"><input class= "online" type="button" id="credit" name="credit" value="Credit" onclick="balance(\'debit\')">'+
 		'<input type="button" class="online" id="debit" name="debit" value="Debit" onclick="balance(\'credit\')">'+
-		'<input type="button" class="online" id="statements" name="statements" value="Show Statements" onclick="statements();"></div>'+
+		'<input type="button" class="online" id="statement" value="Statement" onclick="statements()"></div>'+
 		
 	  '</fieldset>'+
 	'</form>';
 	document.getElementById("initial").innerHTML=doc
+}
+
+function statements(){
+	var account=document.getElementById("account").innerHTML;
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = function() {
+	    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+		  var obj=JSON.parse(xmlHttp.responseText);
+		  document.getElementById("initial").style.display="block";
+		  document.getElementById("register").style.display="none";
+		  var doc="</br></br></br><table border='1'><tr><td>Sr.No</td><td>Account Number</td><td>Status</td><td>Transaction Date</td></tr>";
+		  for(var i=0;i<obj.length;i++)
+		  {
+			doc+="<tr><td>"+(i+1)+"</td><td>"+obj[i].AccountNumber+"</td><td>"+obj[i].Status+"</td><td>"+obj[i].transactionDate+"</td></tr>";
+		  }
+		  doc+="</table>";
+	      document.getElementById("initial").innerHTML=doc;
+		}
+	}
+	xmlHttp.open( "GET", "http://localhost:3000/statement?account="+account, false );
+	xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	//var params="account="+account;
+	xmlHttp.send();
 }
 
 function balance(val){
